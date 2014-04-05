@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 #***********************************************************************#
 # Copyright (C) 2014 Prabod Rathnayaka									#
@@ -25,6 +26,7 @@ import random
 
 from Tkinter import *
 from Canvas import Rectangle, CanvasText, Group, Window
+
 
 #########################################################################
 class Cards:
@@ -113,29 +115,32 @@ class RotatePlayer:
 		self.Player3 = [] 
 		self.Player4 = [] 
 	
-	def DivideCards(self,self.Player1,self.Player2,self.Player3,self.Player4): #Divide cards to players
+	def DivideCards(self,Player1,Player2,Player3,Player4):
+		
 		Card=Cards() #call Cards class
+		
 		Card.DivideRound1(self.Player1,self.Player2,self.Player3,self.Player4)
-		if South == choosefav: #Prompting for Fav from the user
+		
+		if ChooseFav % 4 == 0: #Prompting for Fav from the user
 			self.w=popupFav(master)
-        	self.master.wait_window(self.w.top)
-        	Fav=self.w.value
-		else: #Choosing Fav by CPU Plyers
+			self.master.wait_window(self.w.top)
+			Fav=self.w.value
+		else:
 			Fav=card.Favourite(choosefav)
 			Card.DivideRound2(self.Player1,self.Player2,self.Player3,self.Player4)
 			
 	def Chooseplayer(self,South,East,North,West):
-		if max == South:
+		if max == 0:
 			South = self.Player1
 			East = self.Player2
 			North = self.Player3
 			West = self.Player4
-		elif max == East:
+		elif max == 1:
 			East = self.Player1
 			North = self.Player2
 			West = self.Player3
 			South = self.Player4
-		elif max == North:
+		elif max == 2:
 			North = self.Player1
 			West = self.Player2
 			South = self.Player3
@@ -150,25 +155,25 @@ class RotatePlayer:
 class popupFav(object): #popup window for Fav prompt for user
     def __init__(self,master):
         top=self.top=Toplevel(master)
-        self.l=Label(top,text="තුරුම්පු තෝරන්න")
+        self.l=Label(top,text= u'තුරුම්පු තෝරන්න')
         self.l.pack()
-        self.b0=Button(top,image=PhotoImage(file = "image/spade.gif"),command=self.spade)
+        self.b0=Button(top,image=PhotoImage(file = "image/spade.gif"),command=self.spade,relief="ridge",height="50px",width="50px")
         self.b0.pack(side=LEFT)
         
-        self.b1=Button(top,image=PhotoImage(file = "image/club.gif"),command=self.club)
+        self.b1=Button(top,image=PhotoImage(file = "image/club.gif"),command=self.club,relief="ridge",height="50px",width="50px")
         self.b1.pack(side=LEFT)
         
-        self.b2=Button(top,image=PhotoImage(file = "image/diamond.gif"),command=self.diamond)
+        self.b2=Button(top,image=PhotoImage(file = "image/diamond.gif"),command=self.diamond,relief="ridge",height="50px",width="50px")
         self.b2.pack(side=LEFT)
         
-        self.b3=Button(top,image=PhotoImage(file = "image/heart.gif"),command=self.heart)
+        self.b3=Button(top,image=PhotoImage(file = "image/heart.gif"),command=self.heart,relief="ridge",height="50px",width="50px")
         self.b3.pack(side=LEFT)
         
     def spade(self):
         self.value=0
         self.top.destroy()
 	def club(self):
-        self.value=1
+		self.value=1
         self.top.destroy()
     def diamond(self):
         self.value=2
@@ -178,3 +183,36 @@ class popupFav(object): #popup window for Fav prompt for user
         self.top.destroy()
 #########################################################################################
 
+class mainscreen(object):
+	def __init__(self,master):
+		self.imageList=[] #save card images
+		
+		for i in range(32):
+			self.imageList.append(PhotoImage(file = "image/"+ str(i) + ".gif"))
+		
+		self.South = [] #User
+		self.East = [] #Cpu player1
+		self.North = [] #Cpu Team mate with user
+		self.West = [] #Cpu player2
+		
+		self.max = 0 #Record the player who played the highest card, South=0 East =1 North =2 West =3
+		self.Fav = 0 #Saves The Favourite suit for the Round
+		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
+		self.round = 0 #ongoing round
+		
+		# divide cards into 4 lists
+		if self.round % 4 == 0:
+			DivideCards(self.South,self.East,self.North,self.West)
+			self.round += 1
+		elif self.round % 4 == 1:
+			DivideCards(self.East,self.North,self.West,self.South)
+			self.round += 1
+		elif self.round % 4 == 2:
+			DivideCards(self.North,self.West,self.South,self.East)
+			self.round += 1
+		elif self.round % 4 == 3:
+			DivideCards(self.West,self.South,self.East,self.North)
+			self.round += 1
+		
+	def DealFirst(self,Player):
+		
