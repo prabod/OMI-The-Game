@@ -66,16 +66,23 @@ class Cards:
 					self.difsuit=False
 					
 		for i in range(4):
-			player1.append(self.CardDeck[i])  #Four Cards to Player1
-		
+			player1.append([])
+			player1[i].append(self.CardDeck[i]//8) #suit of the card
+			player1[i].append(self.CardDeck[i])  #Four Cards to Player1
 		for i in range(4,8):
-			player2.append(self.CardDeck[i])  #Four Cards to Player2
+			player2.append([])
+			player2[i].append(self.CardDeck[i]//8) #suit of the card
+			player2[i].append(self.CardDeck[i])  #Four Cards to Player1
 		
 		for i in range(8,12):
-			player3.append(self.CardDeck[i])  #Four Cards to Player3
+			player3.append([])
+			player3[i].append(self.CardDeck[i]//8) #suit of the card
+			player3[i].append(self.CardDeck[i])  #Four Cards to Player1
 		
 		for i in range(12,16):
-			player4.append(self.CardDeck[i])  #Four Cards to Player4
+			player4.append([])
+			player4[i].append(self.CardDeck[i]//8) #suit of the card
+			player4[i].append(self.CardDeck[i])  #Four Cards to Player1
 	
 	def DivideRound2(self,player1,player2,player3,player4):		
 		for i in range(16,20):
@@ -92,17 +99,17 @@ class Cards:
 				
 	def Favourite(self,playerX): #Choosing Favourite
 		for i in range(4):
-			if playerX[i]//8==0:
-				self.Dummy[0]+=playerX[i]%8 
+			if playerX[i][1]//8==0:
+				self.Dummy[0]+=playerX[i][1]%8 
 			
-			if playerX[i]//8==1:
-				self.Dummy[1]+=playerX[i]%8
+			if playerX[i][1]//8==1:
+				self.Dummy[1]+=playerX[i][1]%8
 				
-			if playerX[i]//8==2:
-				self.Dummy[2]+=playerX[i]%8
+			if playerX[i][1]//8==2:
+				self.Dummy[2]+=playerX[i][1]%8
 				
-			if playerX[i]//8==3:
-				self.Dummy[3]+=playerX[i]%8
+			if playerX[i][1]//8==3:
+				self.Dummy[3]+=playerX[i][1]%8
 			
 		return self.Dummy.index(max(self.Dummy))
 			
@@ -204,15 +211,31 @@ class mainscreen(object):
 		if self.round % 4 == 0:
 			DivideCards(self.South,self.East,self.North,self.West)
 			self.round += 1
+			self.choosefav += 1
 		elif self.round % 4 == 1:
 			DivideCards(self.East,self.North,self.West,self.South)
 			self.round += 1
+			self.choosefav += 1
+			Fav=Favourite(self.East)
 		elif self.round % 4 == 2:
 			DivideCards(self.North,self.West,self.South,self.East)
 			self.round += 1
+			self.choosefav += 1
+			Fav=Favourite(self.North)
 		elif self.round % 4 == 3:
 			DivideCards(self.West,self.South,self.East,self.North)
 			self.round += 1
+			self.choosefav += 1
+			Fav=Favourite(self.West)
+		
+		South.sort() #sort the card set 
 		
 	def DealFirst(self,Player):
-		
+		for i in range(8):
+			if Player[i][1] == 7 or Player[i][1] == 15 or Player[i][1] == 23 or Player[i][1] == 31 and Player[i][0] != self.Fav:
+				return Player[i][1] #If you got an Ace fire Away !!
+			else:
+				min=9
+				if Player[i][1] <min and Player[i][0] != self.Fav:
+					min = Player[i][1]
+		return min

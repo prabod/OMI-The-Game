@@ -66,16 +66,23 @@ class Cards:
 					self.difsuit=False
 					
 		for i in range(4):
-			player1.append(self.CardDeck[i])  #Four Cards to Player1
-		
+			player1.append([])
+			player1[i].append(self.CardDeck[i]//8) #suit of the card
+			player1[i].append(self.CardDeck[i]%8)  #Four Cards to Player1
 		for i in range(4,8):
-			player2.append(self.CardDeck[i])  #Four Cards to Player2
+			player2.append([])
+			player2[i].append(self.CardDeck[i]//8) #suit of the card
+			player2[i].append(self.CardDeck[i]%8)  #Four Cards to Player1
 		
 		for i in range(8,12):
-			player3.append(self.CardDeck[i])  #Four Cards to Player3
+			player3.append([])
+			player3[i].append(self.CardDeck[i]//8) #suit of the card
+			player3[i].append(self.CardDeck[i]%8)  #Four Cards to Player1
 		
 		for i in range(12,16):
-			player4.append(self.CardDeck[i])  #Four Cards to Player4
+			player4.append([])
+			player4[i].append(self.CardDeck[i]//8) #suit of the card
+			player4[i].append(self.CardDeck[i]%8)  #Four Cards to Player1
 	
 	def DivideRound2(self,player1,player2,player3,player4):		
 		for i in range(16,20):
@@ -92,17 +99,17 @@ class Cards:
 				
 	def Favourite(self,playerX): #Choosing Favourite
 		for i in range(4):
-			if playerX[i]//8==0:
-				self.Dummy[0]+=playerX[i]%8 
+			if playerX[i][1]//8==0:
+				self.Dummy[0]+=playerX[i][1]%8 
 			
-			if playerX[i]//8==1:
-				self.Dummy[1]+=playerX[i]%8
+			if playerX[i][1]//8==1:
+				self.Dummy[1]+=playerX[i][1]%8
 				
-			if playerX[i]//8==2:
-				self.Dummy[2]+=playerX[i]%8
+			if playerX[i][1]//8==2:
+				self.Dummy[2]+=playerX[i][1]%8
 				
-			if playerX[i]//8==3:
-				self.Dummy[3]+=playerX[i]%8
+			if playerX[i][1]//8==3:
+				self.Dummy[3]+=playerX[i][1]%8
 			
 		return self.Dummy.index(max(self.Dummy))
 			
@@ -121,7 +128,7 @@ class RotatePlayer:
 		
 		Card.DivideRound1(self.Player1,self.Player2,self.Player3,self.Player4)
 		
-		if South == choosefav: #Prompting for Fav from the user
+		if ChooseFav % 4 == 0: #Prompting for Fav from the user
 			self.w=popupFav(master)
 			self.master.wait_window(self.w.top)
 			Fav=self.w.value
@@ -130,17 +137,17 @@ class RotatePlayer:
 			Card.DivideRound2(self.Player1,self.Player2,self.Player3,self.Player4)
 			
 	def Chooseplayer(self,South,East,North,West):
-		if max == South:
+		if max == 0:
 			South = self.Player1
 			East = self.Player2
 			North = self.Player3
 			West = self.Player4
-		elif max == East:
+		elif max == 1:
 			East = self.Player1
 			North = self.Player2
 			West = self.Player3
 			South = self.Player4
-		elif max == North:
+		elif max == 2:
 			North = self.Player1
 			West = self.Player2
 			South = self.Player3
@@ -185,4 +192,48 @@ class popupFav(object): #popup window for Fav prompt for user
 
 class mainscreen(object):
 	def __init__(self,master):
+		self.imageList=[] #save card images
 		
+		for i in range(32):
+			self.imageList.append(PhotoImage(file = "image/"+ str(i) + ".gif"))
+		
+		self.South = [] #User
+		self.East = [] #Cpu player1
+		self.North = [] #Cpu Team mate with user
+		self.West = [] #Cpu player2
+		
+		self.max = 0 #Record the player who played the highest card, South=0 East =1 North =2 West =3
+		self.Fav = 0 #Saves The Favourite suit for the Round
+		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
+		self.round = 0 #ongoing round
+		
+		# divide cards into 4 lists
+		if self.round % 4 == 0:
+			DivideCards(self.South,self.East,self.North,self.West)
+			self.round += 1
+			self.choosefav += 1
+		elif self.round % 4 == 1:
+			DivideCards(self.East,self.North,self.West,self.South)
+			self.round += 1
+			self.choosefav += 1
+			Fav=Favourite(self.East)
+		elif self.round % 4 == 2:
+			DivideCards(self.North,self.West,self.South,self.East)
+			self.round += 1
+			self.choosefav += 1
+			Fav=Favourite(self.North)
+		elif self.round % 4 == 3:
+			DivideCards(self.West,self.South,self.East,self.North)
+			self.round += 1
+			self.choosefav += 1
+			Fav=Favourite(self.West)
+		
+		South.sort() #sort the card set 
+		
+	def DealFirst(self,Player):
+		for i in range(8):
+			if Player[i][1] == 7 or Player[i][1] == 15 or Player[i][1] == 23 or Player[i][1] == 31 and Player[i][0] != self.Fav:
+				return Player[i][1] #If you got an Ace fire Away !!
+			else:
+				min=9
+			
