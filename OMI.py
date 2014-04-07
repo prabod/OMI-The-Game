@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 """
 #***********************************************************************#
-# Copyright (C) 2014 Prabod Rathnayaka									#
-# This file is part of OMI-The Game.									#
-#																		#
+# Copyright (C) 2014 Prabod Rathnayaka                                  #
+# This file is part of OMI-The Game.                                    #
+#                                                                       #
 # OMI-The Game is free software: you can redistribute it and/or modify  #
 # it under the terms of the GNU General Public License as published by  #
 # the Free Software Foundation, either version 3 of the License, or     #
-# any later version.													#
-#																		#
-# OMI-The Game is distributed in the hope that it will be useful,		#
-# but WITHOUT ANY WARRANTY; without even the implied warranty of		#
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the			#
-# GNU General Public License for more details.							#
-#																		#
-# You should have received a copy of the GNU General Public License		#
+# any later version.                                                    #
+#                                                                       #
+# OMI-The Game is distributed in the hope that it will be useful,       #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of        #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the	        #
+# GNU General Public License for more details.                          #
+#                                                                       #
+# You should have received a copy of the GNU General Public License     #
 #***********************************************************************#
 
 """
@@ -108,7 +108,7 @@ class Cards:
 ##########################################################################
 
 class RotatePlayer:
-	def __init__(self,South,East,North,West,max,choosefav,Fav,master):
+	def __init__(self,Player1,Player2,Player3,Player4,max,choosefav,Fav,master):
 		self.Player1 = [] 
 		self.Player2 = [] 
 		self.Player3 = [] 
@@ -118,7 +118,7 @@ class RotatePlayer:
 		
 		Card=Cards() #call Cards class
 		
-		Card.DivideRound1(self.Player1,self.Player2,self.Player3,self.Player4)
+		Card.DivideRound1(Player1,Player2,Player3,Player4)
 		
 		if ChooseFav % 4 == 0: #Prompting for Fav from the user
 			self.w=popupFav(master)
@@ -126,7 +126,7 @@ class RotatePlayer:
 			Fav=self.w.value
 		else:
 			Fav=card.Favourite(choosefav)
-			Card.DivideRound2(self.Player1,self.Player2,self.Player3,self.Player4)
+			Card.DivideRound2(Player1,Player2,Player3,Player4)
 			
 	def Chooseplayer(self,South,East,North,West):
 		if max == 0:
@@ -198,9 +198,19 @@ class mainscreen(object):
 		self.Fav = 0 #Saves The Favourite suit for the Round
 		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
 		self.round = 0 #ongoing round
+		
+		##GUI
+		self.canvas = Canvas(master,
+                             background='#070',
+                             highlightthickness=0,
+                             width=1024,
+                             height=768)
+        self.canvas.pack(fill=BOTH, expand=TRUE)
+		
+		
+	def OMI(self):
 		Board = []
 		
-	def OMI:	
 		# divide cards into 4 lists
 		if self.round % 4 == 0:
 			DivideCards(self.South,self.East,self.North,self.West)
@@ -224,7 +234,7 @@ class mainscreen(object):
 		
 		self.South.sort() #sort the card set 
 		
-		
+		while len()
 	
 	
 		
@@ -233,13 +243,17 @@ class mainscreen(object):
 		for i in range(8):
 			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 != self.Fav:
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
+				Player.pop(Player.index(Player[i]))
+				played=True
+				break
 			else:
 				min=32
 				if Player[i] <min and Player[i]//8 != self.Fav:
 					min = Player[i]
-		
-		Board.append(min) #If you got nothing pass the hand.
-	
+		if not played:
+			Board.append(min) #If you got nothing pass the hand.
+			Player.pop(Player.index(min))
+			
 	def DealOther(self,Player,Board):
 	
 		suitofcard = Board[0]//8 #store the suit of first dealt card
@@ -257,11 +271,8 @@ class mainscreen(object):
 		""" Instruction for cpu player when dealing 2nd.
 		Note:- No cutting needed probably your teammate will come up with something """
 		
-		for i in range(len(Player)):
-			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
-				Board.append(Player[i]) #If you got an Ace, fire Away !!
-				
-			elif Player[i] // 8 == suitofcard:
+		for i in range(len(Player)):				
+			if Player[i] // 8 == suitofcard:
 				if Player[i] > Board[0]:
 					card_suit_high.append(Player[i])
 					gotsuit = True
@@ -285,15 +296,21 @@ class mainscreen(object):
 				if other_cards[i] % 8 < minother:
 					minother = other_cards[i]
 					
-		if len(Board)<2:	
+		if len(Board)<2:
+			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
+				Board.append(Player[i]) #If you got an Ace, fire Away !!
+				Player.pop(Player.index(Player[i]))
 			if gotsuit:	
 				if len(card_suit_high) > 0:
 					Board.append(min(card_suit_high))
+					Player.pop(Player.index(min(card_suit_high)))
 				else
 					Board.append(min(card_suit_low))
+					Player.pop(Player.index(min(card_suit_low)))
 			else:
 				Board.append(minother)
-		
+				Player.pop(Player.index(minother))
+				
 		else:
 			for i in range(len(Board))
 					if Board[0]//8 == Board[i]//8 and maxboard < Board[i]%8:
@@ -301,28 +318,39 @@ class mainscreen(object):
 			if gotsuit:	
 				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
+				Player.pop(Player.index(Player[i]))
 				
 				elif len(card_suit_high) > 0:
 					Board.append(min(card_suit_high))
+					Player.pop(Player.index(min(card_suit_high)))
 				else
 					Board.append(min(card_suit_low))
+					Player.pop(Player.index(min(card_suit_low)))
 			
 			elif cut and gotfav:
 				if Board.index(cutmax) == len(Board)-2:
 					Board.append(minother)
+					Player.pop(Player.index(minother))
+					
 				elif min(fav_cards) > cutmax:
 					Board.append(min(fav_cards))
+					Player.pop(Player.index(min(fav_card)))
+					
 				elif cutmax > min(fav_cards) and cutmax < max(fav_cards):
 					for i in range(len(fav_cards)):
 						if fav_cards[i] > cutmax:
-							Board.append(fav_cards[])
+							Board.append(fav_cards[i])
+							Player.pop(Player.index(fav_cards[i]))
 							break
 			elif not gotfav:
 				Board.append(minother)
+				Player.pop(Player.index(minother))
 			
 			elif not cut and gotfav:
 				if Board.index(maxboard) == len(Board)-2 and len(other_cards) >0:
 					Board.append(minother)
+					Player.pop(Player.index(minother))
+					
 				else:
 					Board.append(min(fav_cards))
-					
+					Player.pop(Player.index(min(fav_cards)))
