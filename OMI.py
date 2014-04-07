@@ -198,7 +198,9 @@ class mainscreen(object):
 		self.Fav = 0 #Saves The Favourite suit for the Round
 		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
 		self.round = 0 #ongoing round
+		Board = []
 		
+	def OMI:	
 		# divide cards into 4 lists
 		if self.round % 4 == 0:
 			DivideCards(self.South,self.East,self.North,self.West)
@@ -220,8 +222,12 @@ class mainscreen(object):
 			self.choosefav += 1
 			Fav=Favourite(self.West)
 		
-		South.sort() #sort the card set 
-		Board = []
+		self.South.sort() #sort the card set 
+		
+		
+	
+	
+		
 	
 	def DealFirst(self,Player,Board):#cpu player dealing first
 		for i in range(8):
@@ -237,27 +243,86 @@ class mainscreen(object):
 	def DealOther(self,Player,Board):
 	
 		suitofcard = Board[0]//8 #store the suit of first dealt card
-		card_suit = [] #local list to store the cards Player got according to suitofcard
+		card_suit_high = [] #local list to store the cards Player got according to suitofcard
+		card_suit_low = [] #local list to store the cards Player got according to suitofcard
+		fav_cards = [] #local list to store the Favourite cards 
 		other_cards = [] #local list to store the cards Player got not according to suitofcard
+		gotfav = False
 		gotsuit = False #Boolean variable to record if player got cards in suitofcard
 		cut = False #Boolean variable to record if board have been cut with a favourite
-			
+		cutmax = 0 #If Cut is true this stores the highest value of cut card
+		minother = 8 #lowest card of other cards
+		maxboard = 0 #highest card of board
+		
 		""" Instruction for cpu player when dealing 2nd.
 		Note:- No cutting needed probably your teammate will come up with something """
 		
-		if len(Board)<2:
-			for i in range(len(Player)):
-				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
-					Board.append(Player[i]) #If you got an Ace, fire Away !!
+		for i in range(len(Player)):
+			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
+				Board.append(Player[i]) #If you got an Ace, fire Away !!
 				
-				elif Player[i] // 8 == suitofcard:
-					if Player[i] > Board[0]:
-						card_suit.append(Player[i])
+			elif Player[i] // 8 == suitofcard:
+				if Player[i] > Board[0]:
+					card_suit_high.append(Player[i])
 					gotsuit = True
-				elif Player[i] // 8 != self.Fav:
-					other_cards.append(Player[i])
+				else:
+					card_suit_low.append(Player[i])
+					gotsuit = True
+			elif Player[i] // 8 != self.Fav:
+				other_cards.append(Player[i])
 			
+			elif Player[i] // 8 == self.Fav:
+				fav_cards.append(Player[i])
+				gotfav = True
+				fav_cards.sort()
+				
+		for i in range(len(Board)):
+				if Board[i]//8 == self.Fav:
+					cut = True
+					cutmax = Board[i]
+					
+		for i in range(len(other_cards)):
+				if other_cards[i] % 8 < minother:
+					minother = other_cards[i]
+					
+		if len(Board)<2:	
 			if gotsuit:	
-				Board.append(min(card_suit))
+				if len(card_suit_high) > 0:
+					Board.append(min(card_suit_high))
+				else
+					Board.append(min(card_suit_low))
 			else:
-				Board.append(min(other_cards))
+				Board.append(minother)
+		
+		else:
+			for i in range(len(Board))
+					if Board[0]//8 == Board[i]//8 and maxboard < Board[i]%8:
+						maxboard = Board[i]%8
+			if gotsuit:	
+				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
+				Board.append(Player[i]) #If you got an Ace, fire Away !!
+				
+				elif len(card_suit_high) > 0:
+					Board.append(min(card_suit_high))
+				else
+					Board.append(min(card_suit_low))
+			
+			elif cut and gotfav:
+				if Board.index(cutmax) == len(Board)-2:
+					Board.append(minother)
+				elif min(fav_cards) > cutmax:
+					Board.append(min(fav_cards))
+				elif cutmax > min(fav_cards) and cutmax < max(fav_cards):
+					for i in range(len(fav_cards)):
+						if fav_cards[i] > cutmax:
+							Board.append(fav_cards[])
+							break
+			elif not gotfav:
+				Board.append(minother)
+			
+			elif not cut and gotfav:
+				if Board.index(maxboard) == len(Board)-2 and len(other_cards) >0:
+					Board.append(minother)
+				else:
+					Board.append(min(fav_cards))
+					
