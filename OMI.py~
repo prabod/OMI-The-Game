@@ -232,34 +232,24 @@ class mainscreen(object):
 			self.choosefav += 1
 			Fav=Favourite(self.West)
 		
-<<<<<<< HEAD
 		self.South.sort() #sort the card set 
 		
-		
+		while len()
 	
 	
 		
-=======
-		South.sort() #sort the card set 
-		Board = []
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 	
 	def DealFirst(self,Player,Board):#cpu player dealing first
 		for i in range(8):
 			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 != self.Fav:
-<<<<<<< HEAD
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
 				Player.pop(Player.index(Player[i]))
 				played=True
 				break
-=======
-				Board.append(Player[i]) #If you got an Ace fire Away !!
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 			else:
 				min=32
 				if Player[i] <min and Player[i]//8 != self.Fav:
 					min = Player[i]
-<<<<<<< HEAD
 		if not played:
 			Board.append(min) #If you got nothing pass the hand.
 			Player.pop(Player.index(min))
@@ -364,24 +354,3 @@ class mainscreen(object):
 				else:
 					Board.append(min(fav_cards))
 					Player.pop(Player.index(min(fav_cards)))
-=======
-		
-		Board.append(min) #If you got nothing pass the hand.
-	
-	def DealOther(self,Player,Board):
-	
-		suitofcard = Board[0]//8 #store the suit of first dealt card
-		card_suit = [] #local list to store the cards Player got according to suitofcard
-		gotsuit = False #Boolean variable to record if player got cards in suitofcard
-		cut = False #Boolean variable to record if board have been cut with a favourite
-			
-		if len(Board)<2:
-			for i in range(len(Player)):
-				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
-					Board.append(Player[i]) #If you got an Ace fire Away !!
-				
-				elif Player[i] // 8 == suitofcard:
-					card_suit.append(Player[i])
-					gotsuit = True
-				
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452

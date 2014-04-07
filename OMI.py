@@ -198,9 +198,7 @@ class mainscreen(object):
 		self.Fav = 0 #Saves The Favourite suit for the Round
 		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
 		self.round = 0 #ongoing round
-		Board = []
 		
-<<<<<<< HEAD
 		##GUI
 		self.canvas = Canvas(master,
                              background='#070',
@@ -213,9 +211,6 @@ class mainscreen(object):
 	def OMI(self):
 		Board = []
 		
-=======
-	def OMI:	
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 		# divide cards into 4 lists
 		if self.round % 4 == 0:
 			DivideCards(self.South,self.East,self.North,self.West)
@@ -239,43 +234,26 @@ class mainscreen(object):
 		
 		self.South.sort() #sort the card set 
 		
-<<<<<<< HEAD
 		while len()
 	
 	
 		
 	
-=======
-		
-	
-	
-		
-	
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 	def DealFirst(self,Player,Board):#cpu player dealing first
 		for i in range(8):
 			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 != self.Fav:
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
-<<<<<<< HEAD
 				Player.pop(Player.index(Player[i]))
 				played=True
 				break
-=======
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 			else:
 				min=32
 				if Player[i] <min and Player[i]//8 != self.Fav:
 					min = Player[i]
-<<<<<<< HEAD
 		if not played:
 			Board.append(min) #If you got nothing pass the hand.
 			Player.pop(Player.index(min))
 			
-=======
-		
-		Board.append(min) #If you got nothing pass the hand.
-	
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 	def DealOther(self,Player,Board):
 	
 		suitofcard = Board[0]//8 #store the suit of first dealt card
@@ -293,16 +271,8 @@ class mainscreen(object):
 		""" Instruction for cpu player when dealing 2nd.
 		Note:- No cutting needed probably your teammate will come up with something """
 		
-<<<<<<< HEAD
 		for i in range(len(Player)):				
 			if Player[i] // 8 == suitofcard:
-=======
-		for i in range(len(Player)):
-			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
-				Board.append(Player[i]) #If you got an Ace, fire Away !!
-				
-			elif Player[i] // 8 == suitofcard:
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 				if Player[i] > Board[0]:
 					card_suit_high.append(Player[i])
 					gotsuit = True
@@ -326,7 +296,6 @@ class mainscreen(object):
 				if other_cards[i] % 8 < minother:
 					minother = other_cards[i]
 					
-<<<<<<< HEAD
 		if len(Board)<2:
 			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
@@ -342,17 +311,6 @@ class mainscreen(object):
 				Board.append(minother)
 				Player.pop(Player.index(minother))
 				
-=======
-		if len(Board)<2:	
-			if gotsuit:	
-				if len(card_suit_high) > 0:
-					Board.append(min(card_suit_high))
-				else
-					Board.append(min(card_suit_low))
-			else:
-				Board.append(minother)
-		
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 		else:
 			for i in range(len(Board))
 					if Board[0]//8 == Board[i]//8 and maxboard < Board[i]%8:
@@ -360,7 +318,6 @@ class mainscreen(object):
 			if gotsuit:	
 				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
-<<<<<<< HEAD
 				Player.pop(Player.index(Player[i]))
 				
 				elif len(card_suit_high) > 0:
@@ -369,18 +326,10 @@ class mainscreen(object):
 				else
 					Board.append(min(card_suit_low))
 					Player.pop(Player.index(min(card_suit_low)))
-=======
-				
-				elif len(card_suit_high) > 0:
-					Board.append(min(card_suit_high))
-				else
-					Board.append(min(card_suit_low))
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 			
 			elif cut and gotfav:
 				if Board.index(cutmax) == len(Board)-2:
 					Board.append(minother)
-<<<<<<< HEAD
 					Player.pop(Player.index(minother))
 					
 				elif min(fav_cards) > cutmax:
@@ -396,29 +345,12 @@ class mainscreen(object):
 			elif not gotfav:
 				Board.append(minother)
 				Player.pop(Player.index(minother))
-=======
-				elif min(fav_cards) > cutmax:
-					Board.append(min(fav_cards))
-				elif cutmax > min(fav_cards) and cutmax < max(fav_cards):
-					for i in range(len(fav_cards)):
-						if fav_cards[i] > cutmax:
-							Board.append(fav_cards[])
-							break
-			elif not gotfav:
-				Board.append(minother)
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
 			
 			elif not cut and gotfav:
 				if Board.index(maxboard) == len(Board)-2 and len(other_cards) >0:
 					Board.append(minother)
-<<<<<<< HEAD
 					Player.pop(Player.index(minother))
 					
 				else:
 					Board.append(min(fav_cards))
 					Player.pop(Player.index(min(fav_cards)))
-=======
-				else:
-					Board.append(min(fav_cards))
-					
->>>>>>> 17816560fc3c7e042013a5c74f5d2acccb94e452
