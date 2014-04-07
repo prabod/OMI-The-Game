@@ -198,7 +198,9 @@ class mainscreen(object):
 		self.Fav = 0 #Saves The Favourite suit for the Round
 		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
 		self.round = 0 #ongoing round
+		Board = []
 		
+	def OMI:	
 		# divide cards into 4 lists
 		if self.round % 4 == 0:
 			DivideCards(self.South,self.East,self.North,self.West)
@@ -221,9 +223,9 @@ class mainscreen(object):
 			Fav=Favourite(self.West)
 		
 		self.South.sort() #sort the card set 
-		Board = []
+		
 	
-	def OMI:
+	
 		
 	
 	def DealFirst(self,Player,Board):#cpu player dealing first

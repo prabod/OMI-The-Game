@@ -224,6 +224,7 @@ class mainscreen(object):
 		
 		self.South.sort() #sort the card set 
 		
+		
 	
 	
 		
