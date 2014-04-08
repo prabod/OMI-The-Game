@@ -194,6 +194,11 @@ class mainscreen(object):
 		self.North = [] #Cpu Team mate with user
 		self.West = [] #Cpu player2
 		
+		self.player1=0
+		self.player2=0
+		self.player3=0
+		self.player4=0
+		
 		self.max = 0 #Record the player who played the highest card, South=0 East =1 North =2 West =3
 		self.Fav = 0 #Saves The Favourite suit for the Round
 		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
@@ -205,8 +210,27 @@ class mainscreen(object):
                              highlightthickness=0,
                              width=1024,
                              height=768)
-        self.canvas.pack(fill=BOTH, expand=TRUE)
+		self.canvas.pack(fill=BOTH, expand=TRUE)
+		usercard1 = Label(master, image=my_image, cursor="left_ptr")
+		usercard1.bind("<1>", do_something)
 		
+		usercard2 = Label(master, image=my_image, cursor="left_ptr")
+		usercard2.bind("<1>", do_something)
+		
+		usercard3 = Label(master, image=my_image, cursor="left_ptr")
+		usercard3.bind("<1>", do_something)
+		
+		usercard4 = Label(master, image=my_image, cursor="left_ptr")
+		usercard4.bind("<1>", do_something)
+		
+		usercard5 = Label(master, image=my_image, cursor="left_ptr")
+		usercard5.bind("<1>", do_something)
+		
+		usercard6 = Label(master, image=my_image, cursor="left_ptr")
+		usercard6.bind("<1>", do_something)
+		
+		usercard1 = Label(master, image=my_image, cursor="left_ptr")
+		usercard1.bind("<1>", do_something)
 		
 	def OMI(self):
 		Board = []
@@ -233,11 +257,32 @@ class mainscreen(object):
 			Fav=Favourite(self.West)
 		
 		self.South.sort() #sort the card set 
-		
-		while len()
+		win = False
+		while(win):
+			if max == 0:
+				DealUser(self)
+				DealOther(East,Board)
+				DealOther(North,Board)
+				DealOther(West,Board)
+			elif max == 1:
+				DealFirst(East,Board)
+				DealOther(North,Board)
+				DealOther(West,Board)
+				DealUser(self)
+			elif max == 2:
+				DealFirst(North,Board)
+				DealOther(West,Board)
+				DealUser(self)
+				DealOther(East,Board)
+			elif max == 3	
+				DealFirst(West,Board)
+				DealUser(self)
+				DealOther(East,Board)
+				DealOther(North,Board)
+			
 	
-	
-		
+	def DealUser(self):
+		pass
 	
 	def DealFirst(self,Player,Board):#cpu player dealing first
 		for i in range(8):
@@ -297,14 +342,14 @@ class mainscreen(object):
 					minother = other_cards[i]
 					
 		if len(Board)<2:
-			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
+			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard:
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
 				Player.pop(Player.index(Player[i]))
 			if gotsuit:	
 				if len(card_suit_high) > 0:
 					Board.append(min(card_suit_high))
 					Player.pop(Player.index(min(card_suit_high)))
-				else
+				else:
 					Board.append(min(card_suit_low))
 					Player.pop(Player.index(min(card_suit_low)))
 			else:
@@ -312,18 +357,18 @@ class mainscreen(object):
 				Player.pop(Player.index(minother))
 				
 		else:
-			for i in range(len(Board))
+			for i in range(len(Board)):
 					if Board[0]//8 == Board[i]//8 and maxboard < Board[i]%8:
 						maxboard = Board[i]%8
 			if gotsuit:	
-				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard::
-				Board.append(Player[i]) #If you got an Ace, fire Away !!
-				Player.pop(Player.index(Player[i]))
+				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard:
+					Board.append(Player[i]) #If you got an Ace, fire Away !!
+					Player.pop(Player.index(Player[i]))
 				
 				elif len(card_suit_high) > 0:
 					Board.append(min(card_suit_high))
 					Player.pop(Player.index(min(card_suit_high)))
-				else
+				else:
 					Board.append(min(card_suit_low))
 					Player.pop(Player.index(min(card_suit_low)))
 			
