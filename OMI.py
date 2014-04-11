@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# -*- sid_ET UTF-8-*- 
+#si_LK UTF-8
+# sk_SK ISO-8859-2 
 """
 #***********************************************************************#
 # Copyright (C) 2014 Prabod Rathnayaka                                  #
@@ -116,46 +119,21 @@ class RotatePlayer:
 		self.chooseFav=choosefav
 		self.master=master
 		
-	def DivideCards(self,Player1,Player2,Player3,Player4):
-		
-		Card=Cards() #call Cards class
-		
-		Card.DivideRound1(Player1,Player2,Player3,Player4)
-		
-		if self.chooseFav % 4 == 0: #Prompting for Fav from the user
-			self.w=popupFav(self.master)
-			self.master.wait_window(self.w.top)
-			Fav=self.w.value
-		else:
-			Fav=card.Favourite(self.chooseFav)
-			Card.DivideRound2(Player1,Player2,Player3,Player4)
-			
+	
 	def Chooseplayer(self,South,East,North,West):
 		if max == 0:
 			South = self.Player1
-			East = self.Player2
-			North = self.Player3
-			West = self.Player4
 		elif max == 1:
 			East = self.Player1
-			North = self.Player2
-			West = self.Player3
-			South = self.Player4
 		elif max == 2:
 			North = self.Player1
-			West = self.Player2
-			South = self.Player3
-			East = self.Player4
 		else:
 			West = self.Player1
-			South = self.Player2
-			East = self.Player3
-			North = self.Player4
 			
 #######################################################################################			
 class popupFav(object): #popup window for Fav prompt for user
 	def __init__(self,master):
-		self.top=Toplevel(master)
+		self.top=Toplevel(self.master)
 		l=Label(self.top,text=u"තුරුම්පු තෝරන්න")
 		l.pack()
 		value=self.value=0
@@ -171,8 +149,6 @@ class popupFav(object): #popup window for Fav prompt for user
 		b2.pack(side=LEFT)
 		b3=Button(self.top,image=Photoheart,command=self.heart, relief="ridge",height="50px",width="50px")
 		b3.pack(side=LEFT)
-		master.mainloop()
-        
 		
 	def spade(self):
 		self.value=0
@@ -195,18 +171,29 @@ class mainscreen(object):
 	def __init__(self,master):
 		self.imageList=[] #save card images
 		self.master=master
+		
 		for i in range(32):
 			self.imageList.append(PhotoImage(file = "image/"+ str(i) + ".gif"))
-		
+		self.Board = []
 		self.South = [] #User
 		self.East = [] #Cpu player1
 		self.North = [] #Cpu Team mate with user
 		self.West = [] #Cpu player2
 		
+		self.Player1 = [] 
+		self.Player2 = [] 
+		self.Player3 = [] 
+		self.Player4 = [] 
+		
 		self.player1=0
 		self.player2=0
 		self.player3=0
 		self.player4=0
+		
+		self.prompt=False
+		self.pro=False
+		
+		self.value=0
 		
 		self.max = 0 #Record the player who played the highest card, South=0 East =1 North =2 West =3
 		self.Fav = 0 #Saves The Favourite suit for the Round
@@ -214,95 +201,341 @@ class mainscreen(object):
 		self.round = 0 #ongoing round
 		
 		self.OMI()
+		
 		##GUI
 		self.canvas = Canvas(self.master,
                              background='#070')
 		self.canvas.pack(fill=BOTH, expand=TRUE)
-		usercard1 = Label(self.canvas, image=self.imageList[self.South[0]], cursor="left_ptr")
-		usercard1.place(x=-40, y=-30)
-		usercard1.bind("<1>", self.ClickHandler1)
+		self.usercard1 = Label(self.canvas, image=self.imageList[self.South[0]], cursor="left_ptr")
+		self.usercard1.place(x=260, y=450)
+		self.usercard1.bind("<1>",self.ClickHandler1)
 		
-		usercard2 = Label(self.canvas, image=self.imageList[self.South[1]], cursor="left_ptr")
-		usercard2.place(x=-40, y=-10)
-		usercard2.bind("<1>", self.ClickHandler2)
+		self.usercard2 = Label(self.canvas, image=self.imageList[self.South[1]], cursor="left_ptr")
+		self.usercard2.place(x=280, y=450)
+		self.usercard2.bind("<1>",self.ClickHandler2)
 		
-		usercard3 = Label(self.canvas, image=self.imageList[self.South[2]], cursor="left_ptr")
-		usercard3.place(x=-40, y=-10)
-		usercard3.bind("<1>", self.ClickHandler3)
+		self.usercard3 = Label(self.canvas, image=self.imageList[self.South[2]], cursor="left_ptr")
+		self.usercard3.place(x=300, y=450)
+		self.usercard3.bind("<1>",self.ClickHandler3)
 		
-		usercard4 = Label(self.canvas, image=self.imageList[self.South[3]], cursor="left_ptr")
-		usercard4.place(x=-40, y=30)
-		usercard4.bind("<1>", self.ClickHandler4)
+		self.usercard4 = Label(self.canvas, image=self.imageList[self.South[3]], cursor="left_ptr")
+		self.usercard4.place(x=320, y=450)
+		self.usercard4.bind("<1>",self.ClickHandler4)
 		
-		usercard5 = Label(self.canvas, image=self.imageList[self.South[4]], cursor="left_ptr")
-		usercard5.place(x=-40, y=50)
-		usercard5.bind("<1>", self.ClickHandler5)
+		self.usercard5 = Label(self.canvas, image=self.imageList[self.South[4]], cursor="left_ptr")
 		
-		usercard6 = Label(self.canvas, image=self.imageList[self.South[5]], cursor="left_ptr")
-		usercard6.place(x=-40, y=70)
-		usercard6.bind("<1>", self.ClickHandler6)
+		self.usercard5.bind("<1>",self.ClickHandler5)
 		
-		usercard7 = Label(self.canvas, image=self.imageList[self.South[6]], cursor="left_ptr")
-		usercard7.place(x=-40, y=90)
-		usercard7.bind("<1>", self.ClickHandler7)
+		self.usercard6 = Label(self.canvas, image=self.imageList[self.South[5]], cursor="left_ptr")
 		
-		usercard8 = Label(self.canvas, image=self.imageList[self.South[7]], cursor="left_ptr")
-		usercard9.place(x=-40, y=110)
-		usercard8.bind("<1>", self.ClickHandler8)
-		self.master.mainloop()
+		self.usercard6.bind("<1>",self.ClickHandler6)
+		
+		self.usercard7 = Label(self.canvas, image=self.imageList[self.South[6]], cursor="left_ptr")
+		
+		self.usercard7.bind("<1>",self.ClickHandler7)
+		
+		self.usercard8 = Label(self.canvas, image=self.imageList[self.South[7]], cursor="left_ptr")
+		
+		self.usercard8.bind("<1>",self.ClickHandler8)
+		
+		self.l = Label(self.canvas, text=u"තුරුම්පු තෝරන්න")
+		self.Photospade=PhotoImage(file = "image/spade.gif")
+		self.Photoclub=PhotoImage(file = "image/club.gif")
+		self.Photodiamond=PhotoImage(file = "image/diamond.gif")
+		self.Photoheart=PhotoImage(file = "image/heart.gif")
+		self.b0=Label(self.canvas,image=self.Photospade, relief="ridge",height="50px",width="50px")
+		self.b0.bind("<1>",self.spade)
+		
+		self.b1=Label(self.canvas,image=self.Photoclub, relief="ridge",height="50px",width="50px")
+		self.b1.bind("<1>",self.club)
+		
+		self.b2=Label(self.canvas,image=self.Photodiamond,relief="ridge",height="50px",width="50px")
+		self.b2.bind("<1>",self.diamond)
+		
+		self.b3=Label(self.canvas,image=self.Photoheart, relief="ridge",height="50px",width="50px")
+		self.b3.bind("<1>",self.heart)
+		
+		self.Fav=self.value
+		
+		
+		if self.prompt:
+			self.l.place(x=300,y=300)
+			self.b0.place(x=250,y=350)
+			self.b1.place(x=320,y=350)
+			self.b2.place(x=390,y=350)
+			self.b3.place(x=460,y=350)
+			self.master.update_idletasks()
+			self.pro=True
+		
+		if self.pro:
+			self.usercard5.place(x=340, y=450)
+			self.usercard6.place(x=360, y=450)
+			self.usercard7.place(x=380, y=450)
+			self.usercard8.place(x=400, y=450)
+			self.master.update()
+			
+	def DivideCards(self,Player1,Player2,Player3,Player4):
+		
+		Card=Cards() #call Cards class
+		
+		Card.DivideRound1(Player1,Player2,Player3,Player4)
+		
+		if self.choosefav % 4 == 0: #Prompting for Fav from the user
+			self.prompt=True
+			
+		else:
+			self.pro=True
+			if self.choosefav == 1:
+				plyr = self.East
+			elif self.choosefav == 2:
+				plyr = self.North
+			else:
+				plyr = self.West
+			self.Fav=Card.Favourite(plyr)
+		Card.DivideRound2(Player1,Player2,Player3,Player4)
+		self.master.update_idletasks()
+				
+	def spade(self,event):
+		self.Fav=0
+		self.l.destroy()
+		self.b0.destroy()
+		self.b1.destroy()
+		self.b2.destroy()
+		self.b3.destroy()
+		self.prompt=False
+		self.pro=True
+               
+	def club(self,event):
+		self.Fav=1
+		self.l.destroy()
+		self.b0.destroy()
+		self.b1.destroy()
+		self.b2.destroy()
+		self.b3.destroy()
+		self.prompt=False
+		self.pro=True
+		
+	def diamond(self,event):
+		self.Fav=2
+		self.l.destroy()
+		self.b0.destroy()
+		self.b1.destroy()
+		self.b2.destroy()
+		self.b3.destroy()
+		self.prompt=False
+		self.pro=True
+		
+	def heart(self,event):
+		self.Fav=3
+		self.l.destroy()
+		self.b0.destroy()
+		self.b1.destroy()
+		self.b2.destroy()
+		self.b3.destroy()		
+		self.prompt=False
+		self.pro=True
+		
+	def ClickHandler1(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320		
+		self.usercard1.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[0])
+		
+	
+	def ClickHandler2(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320		
+		self.usercard2.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[1])
+		
+	
+	def ClickHandler3(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320			
+		self.usercard3.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[2])
+		
+	
+	def ClickHandler4(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320			
+		self.usercard4.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[3])
+		
+	
+	def ClickHandler5(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320
+				
+		self.usercard5.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[4])
+		
+	
+	def ClickHandler6(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320
+				
+		self.usercard6.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[5])
+		
+		
+	def ClickHandler7(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320
+				
+		self.usercard7.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[6])
+		
+		
+	def ClickHandler8(self,event):
+		if self.max == 0:
+			dx=300
+			dy=200
+		elif self.max == 1:
+			dx=400
+			dy=200
+		elif self.max == 2:
+			dx=300
+			dy=320
+		elif self.max == 3:
+			dx=400
+			dy=320
+				
+		self.usercard8.place(x=dx, y=dy)
+		self.master.update_idletasks()
+		self.Board.append(self.South[7])
+		self.South.pop(7)
+		
 	def OMI(self):
-		Board = []
+		
 		
 		# divide cards into 4 lists
 		if self.round % 4 == 0:
-			Rotate=RotatePlayer(self.South,self.East,self.North,self.West,max,self.round,self.Fav,self.master)
-			Rotate.DivideCards(self.South,self.East,self.North,self.West)
+			
+			self.DivideCards(self.South,self.East,self.North,self.West)
 			self.round += 1
 			self.choosefav += 1
 		elif self.round % 4 == 1:
-			Rotate=RotatePlayer(self.East,self.North,self.West,self.South,max,self.round,self.Fav,self.master)
-			Rotate.DivideCards(self.East,self.North,self.West,self.South)
+			
+			self.DivideCards(self.East,self.North,self.West,self.South)
 			self.round += 1
 			self.choosefav += 1
 			Fav=Favourite(self.East)
 		elif self.round % 4 == 2:
-			Rotate=RotatePlayer(self.North,self.West,self.South,self.East,max,self.round,self.Fav,self.master)
-			Rotate.DivideCards(self.North,self.West,self.South,self.East)
+			
+			self.DivideCards(self.North,self.West,self.South,self.East)
 			self.round += 1
 			self.choosefav += 1
 			Fav=Favourite(self.North)
 		elif self.round % 4 == 3:
-			Rotate=RotatePlayer(self.West,self.South,self.East,self.North,max,self.round,self.Fav,self.master)
-			Rotate.DivideCards(self.West,self.South,self.East,self.North)
+			
+			self.DivideCards(self.West,self.South,self.East,self.North)
 			self.round += 1
 			self.choosefav += 1
 			Fav=Favourite(self.West)
 		print self.South,self.East,self.North,self.West
-		print Board
+		print self.Board
 		
-		self.South.sort() #sort the card set 
-		win = False
-		while(win):
+		#self.South.sort() #sort the card set 
+		self.win = False
+		while(self.win):
 			if max == 0:
 				DealUser(self)
-				DealOther(self.East,Board)
-				DealOther(self.North,Board)
-				DealOther(self.West,Board)
+				DealOther(self.East,self.Board)
+				DealOther(self.North,self.Board)
+				DealOther(self.West,self.Board)
 			elif max == 1:
-				DealFirst(self.East,Board)
-				DealOther(self.North,Board)
-				DealOther(self.West,Board)
+				DealFirst(self.East,self.Board)
+				DealOther(self.North,self.Board)
+				DealOther(self.West,self.Board)
 				DealUser(self)
 			elif max == 2:
-				DealFirst(self.North,Board)
-				DealOther(self.West,Board)
+				DealFirst(self.North,self.Board)
+				DealOther(self.West,self.Board)
 				DealUser(self)
-				DealOther(self.East,Board)
+				DealOther(self.East,self.Board)
 			elif max == 3:
-				DealFirst(self.West,Board)
+				DealFirst(self.West,self.Board)
 				DealUser(self)
-				DealOther(self.East,Board)
-				DealOther(self.North,Board)
+				DealOther(self.East,self.Board)
+				DealOther(self.North,self.Board)
 			
 	
 		
@@ -430,9 +663,9 @@ class mainscreen(object):
 
 def main():
     root = Tk()
+    root.geometry("800x600+300+300")
     game = mainscreen(root)
     root.protocol('WM_DELETE_WINDOW', root.quit)
     root.mainloop()
-
 if __name__ == '__main__':
     main()
