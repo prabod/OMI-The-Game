@@ -555,12 +555,14 @@ class mainscreen(object):
 	def ClickHandler1(self,event):
 		self.Board.append(self.South[0])
 		self.usercard1.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 		
 	def ClickHandler2(self,event):
 		self.Board.append(self.South[1])
 		self.usercard2.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 		
@@ -568,54 +570,61 @@ class mainscreen(object):
 	def ClickHandler3(self,event):
 		self.Board.append(self.South[2])
 		self.usercard3.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 	
 	def ClickHandler4(self,event):
 		self.Board.append(self.South[3])
 		self.usercard4.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 	
 	def ClickHandler5(self,event):
 		self.Board.append(self.South[4])
 		self.usercard5.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 	
 	def ClickHandler6(self,event):
 		self.Board.append(self.South[5])
 		self.usercard6.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 		
 	def ClickHandler7(self,event):
 		self.Board.append(self.South[6])
 		self.usercard7.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 		
 	def ClickHandler8(self,event):
 		self.Board.append(self.South[7])
 		self.usercard8.destroy()
+		self.master.update_idletasks()
 		self.updateBoard()
 		self.DEAL()
 	
 	def updateBoard(self):
-		self.Boardcard.append(Label(self.canvas, image=self.imageList[self.Board[len(self.Board)-1]]))
-		if len(self.Board)-1 == 0:
-			dx=300
-			dy=200
-		elif len(self.Board)-1 == 1:
-			dx=400
-			dy=200
-		elif len(self.Board)-1 == 2:
-			dx=300
-			dy=320
-		elif len(self.Board)-1 == 3:
-			dx=400
-			dy=320			
-		self.Boardcard[len(self.Boardcard)-1].place(x=dx, y=dy)
+		if len(self.Board)>0:
+			self.Boardcard.append(Label(self.canvas, image=self.imageList[self.Board[len(self.Board)-1]]))
+			if len(self.Board)-1 == 0:
+				dx=300
+				dy=200
+			elif len(self.Board)-1 == 1:
+				dx=400
+				dy=200
+			elif len(self.Board)-1 == 2:
+				dx=300
+				dy=320
+			elif len(self.Board)-1 == 3:
+				dx=400
+				dy=320			
+			self.Boardcard[len(self.Boardcard)-1].place(x=dx, y=dy)
 		time.sleep(0.1)
 		self.master.update_idletasks()
 	
@@ -624,9 +633,42 @@ class mainscreen(object):
 		time.sleep(0.1)
 		self.Board=[]
 		for i in range(len(self.Boardcard)):
+			j=self.Boardcard[i]
+			k=j.place_info()
+			if self.max == 0:
+				destx=330
+				desty=600
+			elif self.max == 1:
+				destx=650
+				desty=150
+			elif self.max == 2:
+				destx=330
+				desty=50
+			elif self.max == 3:
+				destx=150
+				desty=150
+			kv=eval(k["y"])+10
+			kh=eval(k["x"])+10
+			first=0
+			dest=0
+			if self.max == 0 or self.max == 2:
+				first=eval(k["x"])
+				dest=destx
+				kx=kv
+			elif self.max == 1 or self.max == 3:
+				first=eval(k["y"])
+				dest=desty
+				kx=kh	
+			for h in range(first,dest,10):
+				j.place_forget()
+				self.master.update_idletasks()
+				j.place(x=h,y=kv)
+				kx+=10
+				self.master.update_idletasks()
+				
 			self.Boardcard[i].destroy()
 			time.sleep(0.1)
-			
+		self.Boardcard=[]
 		if self.max == 0 or self.max == 2:
 			self.userhandwin+=1
 			time.sleep(0.1)
@@ -637,10 +679,33 @@ class mainscreen(object):
 		self.play()
 	def roundwincheck(self):
 		if self.userhandwin == 5 or self.cpuhandwin == 5:
-			self.userhandwin=0
-			self.cpuhandwin=0
 			time.sleep(0.1)
 			self.canvas.destroy()
+			self.Board = []
+			self.South = [] #User
+			self.East = [] #Cpu player1
+			self.North = [] #Cpu Team mate with user
+			self.West = [] #Cpu player2
+			self.Boardcard=[]
+			self.win = False
+			self.userhandwin = 0
+			self.cpuhandwin = 0
+			self.Player1 = [] 
+			self.Player2 = [] 
+			self.Player3 = [] 
+			self.Player4 = [] 
+			self.prompt=False
+			self.pro=False
+			self.user=False
+			self.ver=150
+			self.hor=260
+			
+			self.Eastcard=[]
+			self.Northcard=[]
+			self.Westcard=[]
+			self.OMI()
+			self.play()
+			self.GUI()
 			
 	def OMI(self):
 		
@@ -719,6 +784,7 @@ class mainscreen(object):
 		self.updateBoard()
 	
 	def DealFirst(self,Player,Board):#cpu player dealing first
+		self.favmin=0
 		for i in range(len(Player)):
 			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 != self.Fav:
 				Board.append(Player[i]) #If you got an Ace, fire Away !!
@@ -726,12 +792,19 @@ class mainscreen(object):
 				self.played=True
 				return
 			else:
-				min=32
-				if Player[i] <min and Player[i]//8 != self.Fav:
-					min = Player[i]
+				self.min=32
+				if Player[i] <self.min and Player[i]//8 != self.Fav:
+					self.min = Player[i]
+				elif Player[i]//8 == self.Fav:
+					if Player[i]%8 < 8:
+						self.favmin=Player[i]
 		if not self.played:
-			Board.append(min) #If you got nothing pass the hand.
-			Player.pop(Player.index(min))
+			if self.min==32:
+				Board.append(self.favmin)
+				Player.pop(Player.index(self.favmin))
+			else:
+				Board.append(self.min) #If you got nothing pass the hand.
+				Player.pop(Player.index(self.min))
 		self.updateBoard()	
 	def DealOther(self,Player,Board):
 		
@@ -744,9 +817,9 @@ class mainscreen(object):
 		gotsuit = False #Boolean variable to record if player got cards in suitofcard
 		cut = False #Boolean variable to record if board have been cut with a favourite
 		cutmax = 0 #If Cut is true this stores the highest value of cut card
-		minother = 8 #lowest card of other cards
+		minother = 15 #lowest card of other cards
 		maxboard = 0 #highest card of board
-		
+		maxboardindex=0
 		""" Instruction for cpu player when dealing 2nd.
 		Note:- No cutting needed probably your teammate will come up with something """
 		
@@ -767,13 +840,13 @@ class mainscreen(object):
 				fav_cards.sort()
 				
 		for i in range(len(Board)):
-				if Board[i]//8 == self.Fav:
-					cut = True
-					cutmax = Board[i]
-					
+			if Board[i]//8 == self.Fav:
+				cut = True
+				cutmax = Board[i]
+		
 		for i in range(len(other_cards)):
-				if other_cards[i] % 8 < minother:
-					minother = other_cards[i]
+			if other_cards[i] % 8 <= minother%8:
+				minother = other_cards[i]
 					
 		if len(Board)<2:
 			if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard:
@@ -792,8 +865,9 @@ class mainscreen(object):
 				
 		else:
 			for i in range(len(Board)):
-					if Board[0]//8 == Board[i]//8 and maxboard < Board[i]%8:
+				if Board[0]//8 == Board[i]//8 and maxboard < Board[i]%8:
 						maxboard = Board[i]%8
+						maxboardindex = i
 			if gotsuit:	
 				if (Player[i] == 7 or Player[i] == 15 or Player[i] == 23 or Player[i] == 31 ) and Player[i]//8 == suitofcard:
 					Board.append(Player[i]) #If you got an Ace, fire Away !!
@@ -813,7 +887,7 @@ class mainscreen(object):
 					
 				elif min(fav_cards) > cutmax:
 					Board.append(min(fav_cards))
-					Player.pop(Player.index(min(fav_card)))
+					Player.pop(Player.index(min(fav_cards)))
 					
 				elif cutmax > min(fav_cards) and cutmax < max(fav_cards):
 					for i in range(len(fav_cards)):
@@ -826,7 +900,7 @@ class mainscreen(object):
 				Player.pop(Player.index(minother))
 			
 			elif not cut and gotfav:
-				if Board.index(maxboard) == len(Board)-2 and len(other_cards) >0:
+				if Board[maxboardindex] == len(Board)-2 and len(other_cards) >0:
 					Board.append(minother)
 					Player.pop(Player.index(minother))
 					
