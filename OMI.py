@@ -27,7 +27,6 @@
 import math
 import random
 import time
-import pygame
 from Tkinter import *
 from Canvas import Rectangle, CanvasText, Group, Window
 
@@ -220,6 +219,7 @@ class mainscreen(object):
 		self.backv=PhotoImage(file = "image/backv.gif")
 		
 		
+		
 		for h in range(4):
 			self.Eastcard.append(Label(self.canvas, image = self.backv))
 			self.Eastcard[h].place(x=650,y=self.ver)
@@ -305,21 +305,7 @@ class mainscreen(object):
 		Card.DivideRound2(Player1,Player2,Player3,Player4)
 		self.master.update_idletasks()
 				
-	def spade(self,event):
-		self.Fav=0
-		self.l.destroy()
-		self.b0.destroy()
-		self.b1.destroy()
-		self.b2.destroy()
-		self.b3.destroy()
-		self.prompt=False
-		
-		self.usercard1.destroy()
-		self.usercard2.destroy()
-		self.usercard3.destroy()
-		self.usercard4.destroy()
-		self.South.sort()
-		
+	def DrawCards(self):
 		self.usercard1 = Label(self.canvas, image=self.imageList[self.South[0]], cursor="left_ptr")
 		self.usercard1.place(x=260, y=450)
 		self.usercard1.bind("<1>",self.ClickHandler1)
@@ -361,6 +347,25 @@ class mainscreen(object):
 				self.ver+=20
 				self.hor+=20
 		self.master.update()
+		
+	def spade(self,event):
+		self.Fav=0
+		self.l.destroy()
+		self.b0.destroy()
+		self.b1.destroy()
+		self.b2.destroy()
+		self.b3.destroy()
+		self.prompt=False
+		
+		self.usercard1.destroy()
+		self.usercard2.destroy()
+		self.usercard3.destroy()
+		self.usercard4.destroy()
+		self.South.sort()
+		self.DrawCards()
+		self.Favlabel=Label(self.canvas,height="50",width="50")
+		self.Favlabel.place(x=300, y=550)
+		self.Favlabel["image"]=self.Photospade
                
 	def club(self,event):
 		self.Fav=1
@@ -377,47 +382,10 @@ class mainscreen(object):
 		self.usercard4.destroy()
 		self.South.sort()
 		
-		self.usercard1 = Label(self.canvas, image=self.imageList[self.South[0]], cursor="left_ptr")
-		self.usercard1.place(x=260, y=450)
-		self.usercard1.bind("<1>",self.ClickHandler1)
-		
-		self.usercard2 = Label(self.canvas, image=self.imageList[self.South[1]], cursor="left_ptr")
-		self.usercard2.place(x=280, y=450)
-		self.usercard2.bind("<1>",self.ClickHandler2)
-		
-		self.usercard3 = Label(self.canvas, image=self.imageList[self.South[2]], cursor="left_ptr")
-		self.usercard3.place(x=300, y=450)
-		self.usercard3.bind("<1>",self.ClickHandler3)
-		
-		self.usercard4 = Label(self.canvas, image=self.imageList[self.South[3]], cursor="left_ptr")
-		self.usercard4.place(x=320, y=450)
-		self.usercard4.bind("<1>",self.ClickHandler4)
-		
-		self.usercard5 = Label(self.canvas, image=self.imageList[self.South[4]], cursor="left_ptr")
-		self.usercard5.place(x=340, y=450)
-		self.usercard5.bind("<1>",self.ClickHandler5)
-		
-		self.usercard6 = Label(self.canvas, image=self.imageList[self.South[5]], cursor="left_ptr")
-		self.usercard6.place(x=360, y=450)
-		self.usercard6.bind("<1>",self.ClickHandler6)
-		
-		self.usercard7 = Label(self.canvas, image=self.imageList[self.South[6]], cursor="left_ptr")
-		self.usercard7.place(x=380, y=450)
-		self.usercard7.bind("<1>",self.ClickHandler7)
-		
-		self.usercard8 = Label(self.canvas, image=self.imageList[self.South[7]], cursor="left_ptr")
-		self.usercard8.place(x=400, y=450)
-		self.usercard8.bind("<1>",self.ClickHandler8)
-		for h in range(4,8):
-				self.Eastcard.append(Label(self.canvas, image = self.backv))
-				self.Eastcard[h].place(x=650,y=self.ver)
-				self.Northcard.append(Label(self.canvas, image = self.backh))
-				self.Northcard[h].place(x=self.hor,y=50)
-				self.Westcard.append(Label(self.canvas, image = self.backv))
-				self.Westcard[h].place(x=50,y=self.ver)
-				self.ver+=20
-				self.hor+=20
-		self.master.update()
+		self.DrawCards()
+		self.Favlabel=Label(self.canvas,height="50",width="50")
+		self.Favlabel.place(x=300, y=550)
+		self.Favlabel["image"]=self.Photoclub
 		
 	def diamond(self,event):
 		self.Fav=2
@@ -434,47 +402,10 @@ class mainscreen(object):
 		self.usercard4.destroy()
 		self.South.sort()
 		
-		self.usercard1 = Label(self.canvas, image=self.imageList[self.South[0]], cursor="left_ptr")
-		self.usercard1.place(x=260, y=450)
-		self.usercard1.bind("<1>",self.ClickHandler1)
-		
-		self.usercard2 = Label(self.canvas, image=self.imageList[self.South[1]], cursor="left_ptr")
-		self.usercard2.place(x=280, y=450)
-		self.usercard2.bind("<1>",self.ClickHandler2)
-		
-		self.usercard3 = Label(self.canvas, image=self.imageList[self.South[2]], cursor="left_ptr")
-		self.usercard3.place(x=300, y=450)
-		self.usercard3.bind("<1>",self.ClickHandler3)
-		
-		self.usercard4 = Label(self.canvas, image=self.imageList[self.South[3]], cursor="left_ptr")
-		self.usercard4.place(x=320, y=450)
-		self.usercard4.bind("<1>",self.ClickHandler4)
-		
-		self.usercard5 = Label(self.canvas, image=self.imageList[self.South[4]], cursor="left_ptr")
-		self.usercard5.place(x=340, y=450)
-		self.usercard5.bind("<1>",self.ClickHandler5)
-		
-		self.usercard6 = Label(self.canvas, image=self.imageList[self.South[5]], cursor="left_ptr")
-		self.usercard6.place(x=360, y=450)
-		self.usercard6.bind("<1>",self.ClickHandler6)
-		
-		self.usercard7 = Label(self.canvas, image=self.imageList[self.South[6]], cursor="left_ptr")
-		self.usercard7.place(x=380, y=450)
-		self.usercard7.bind("<1>",self.ClickHandler7)
-		
-		self.usercard8 = Label(self.canvas, image=self.imageList[self.South[7]], cursor="left_ptr")
-		self.usercard8.place(x=400, y=450)
-		self.usercard8.bind("<1>",self.ClickHandler8)
-		for h in range(4,8):
-				self.Eastcard.append(Label(self.canvas, image = self.backv))
-				self.Eastcard[h].place(x=650,y=self.ver)
-				self.Northcard.append(Label(self.canvas, image = self.backh))
-				self.Northcard[h].place(x=self.hor,y=50)
-				self.Westcard.append(Label(self.canvas, image = self.backv))
-				self.Westcard[h].place(x=50,y=self.ver)
-				self.ver+=20
-				self.hor+=20
-		self.master.update()
+		self.DrawCards()
+		self.Favlabel=Label(self.canvas,height="50",width="50")
+		self.Favlabel.place(x=300, y=550)
+		self.Favlabel["image"]=self.Photodiamond
 		
 	def heart(self,event):
 		self.Fav=3
@@ -491,47 +422,10 @@ class mainscreen(object):
 		self.usercard4.destroy()
 		self.South.sort()
 		
-		self.usercard1 = Label(self.canvas, image=self.imageList[self.South[0]], cursor="left_ptr")
-		self.usercard1.place(x=260, y=450)
-		self.usercard1.bind("<1>",self.ClickHandler1)
-		
-		self.usercard2 = Label(self.canvas, image=self.imageList[self.South[1]], cursor="left_ptr")
-		self.usercard2.place(x=280, y=450)
-		self.usercard2.bind("<1>",self.ClickHandler2)
-		
-		self.usercard3 = Label(self.canvas, image=self.imageList[self.South[2]], cursor="left_ptr")
-		self.usercard3.place(x=300, y=450)
-		self.usercard3.bind("<1>",self.ClickHandler3)
-		
-		self.usercard4 = Label(self.canvas, image=self.imageList[self.South[3]], cursor="left_ptr")
-		self.usercard4.place(x=320, y=450)
-		self.usercard4.bind("<1>",self.ClickHandler4)
-		
-		self.usercard5 = Label(self.canvas, image=self.imageList[self.South[4]], cursor="left_ptr")
-		self.usercard5.place(x=340, y=450)
-		self.usercard5.bind("<1>",self.ClickHandler5)
-		
-		self.usercard6 = Label(self.canvas, image=self.imageList[self.South[5]], cursor="left_ptr")
-		self.usercard6.place(x=360, y=450)
-		self.usercard6.bind("<1>",self.ClickHandler6)
-		
-		self.usercard7 = Label(self.canvas, image=self.imageList[self.South[6]], cursor="left_ptr")
-		self.usercard7.place(x=380, y=450)
-		self.usercard7.bind("<1>",self.ClickHandler7)
-		
-		self.usercard8 = Label(self.canvas, image=self.imageList[self.South[7]], cursor="left_ptr")
-		self.usercard8.place(x=400, y=450)
-		self.usercard8.bind("<1>",self.ClickHandler8)
-		for h in range(4,8):
-				self.Eastcard.append(Label(self.canvas, image = self.backv))
-				self.Eastcard[h].place(x=650,y=self.ver)
-				self.Northcard.append(Label(self.canvas, image = self.backh))
-				self.Northcard[h].place(x=self.hor,y=50)
-				self.Westcard.append(Label(self.canvas, image = self.backv))
-				self.Westcard[h].place(x=50,y=self.ver)
-				self.ver+=20
-				self.hor+=20
-		self.master.update()
+		self.DrawCards()
+		self.Favlabel=Label(self.canvas,height="50",width="50")
+		self.Favlabel.place(x=300, y=550)
+		self.Favlabel["image"]=self.Photoheart
 	
 	def DEAL(self):
 		if self.max == 0:
@@ -555,14 +449,14 @@ class mainscreen(object):
 	def ClickHandler1(self,event):
 		self.Board.append(self.South[0])
 		self.usercard1.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 		
 	def ClickHandler2(self,event):
 		self.Board.append(self.South[1])
 		self.usercard2.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 		
@@ -570,42 +464,42 @@ class mainscreen(object):
 	def ClickHandler3(self,event):
 		self.Board.append(self.South[2])
 		self.usercard3.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 	
 	def ClickHandler4(self,event):
 		self.Board.append(self.South[3])
 		self.usercard4.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 	
 	def ClickHandler5(self,event):
 		self.Board.append(self.South[4])
 		self.usercard5.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 	
 	def ClickHandler6(self,event):
 		self.Board.append(self.South[5])
 		self.usercard6.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 		
 	def ClickHandler7(self,event):
 		self.Board.append(self.South[6])
 		self.usercard7.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 		
 	def ClickHandler8(self,event):
 		self.Board.append(self.South[7])
 		self.usercard8.destroy()
-		self.master.update_idletasks()
+		self.master.update()
 		self.updateBoard()
 		self.DEAL()
 	
@@ -631,40 +525,45 @@ class mainscreen(object):
 	def handwincheck(self):
 		self.max=self.Board.index(max(self.Board))
 		time.sleep(0.1)
-		self.Board=[]
+		
 		for i in range(len(self.Boardcard)):
 			j=self.Boardcard[i]
 			k=j.place_info()
 			if self.max == 0:
 				destx=330
-				desty=600
+				desty=450
 			elif self.max == 1:
 				destx=650
-				desty=150
+				desty=250
 			elif self.max == 2:
 				destx=330
 				desty=50
 			elif self.max == 3:
-				destx=150
-				desty=150
+				destx=50
+				desty=250
 			kv=eval(k["y"])+10
 			kh=eval(k["x"])+10
 			first=0
 			dest=0
 			if self.max == 0 or self.max == 2:
-				first=eval(k["x"])
-				dest=destx
-				kx=kv
-			elif self.max == 1 or self.max == 3:
 				first=eval(k["y"])
 				dest=desty
-				kx=kh	
+			elif self.max == 1 or self.max == 3:
+				first=eval(k["x"])
+				dest=destx
 			for h in range(first,dest,10):
 				j.place_forget()
-				self.master.update_idletasks()
-				j.place(x=h,y=kv)
-				kx+=10
-				self.master.update_idletasks()
+				self.master.update()
+				if self.max == 0 or self.max == 2:
+					kx=kh
+					j.place(x=kx,y=h)
+					j.tkraise()
+					self.master.update()
+				elif self.max == 1 or self.max == 3:
+					ky=kv	 
+					j.place(x=h,y=ky)
+					j.tkraise()
+					self.master.update()
 				
 			self.Boardcard[i].destroy()
 			time.sleep(0.1)
@@ -676,6 +575,7 @@ class mainscreen(object):
 			self.cpuhandwin+=1
 			time.sleep(0.1)
 		time.sleep(0.1)
+		self.Board=[]
 		self.play()
 	def roundwincheck(self):
 		if self.userhandwin == 5 or self.cpuhandwin == 5:
@@ -703,8 +603,9 @@ class mainscreen(object):
 			self.Northcard=[]
 			self.Westcard=[]
 			self.OMI()
-			self.play()
 			self.GUI()
+			self.play()
+			
 			
 	def OMI(self):
 		
@@ -740,19 +641,57 @@ class mainscreen(object):
 		if(not self.win):
 			if self.max == 1:
 				self.DealFirst(self.East,self.Board)
+				time.sleep(0.5)
+				self.Eastcard[random.randint(0, len(self.Eastcard)-1)].destroy()
+				self.master.update()
+				time.sleep(0.5)
 				self.updateBoard()
+				time.sleep(0.1)
+				print self.Board
 				self.DealOther(self.North,self.Board)
+				time.sleep(0.5)
+				self.Northcard[random.randint(0, len(self.Northcard)-1)].destroy()
+				self.master.update()
+				time.sleep(0.5)
 				self.updateBoard()
+				time.sleep(0.1)
+				
+				
 				self.DealOther(self.West,self.Board)
+				time.sleep(0.5)
+				self.Westcard[random.randint(0, len(self.Westcard)-1)].destroy()
+				self.master.update()
+				time.sleep(0.5)
 				self.updateBoard()
+				time.sleep(0.1)
+				
+				
 			elif self.max == 2:
 				self.DealFirst(self.North,self.Board)
+				time.sleep(0.5)
+				self.Northcard[random.randint(0, len(self.Northcard)-1)].destroy()
+				self.master.update()
+				time.sleep(0.5)
 				self.updateBoard()
+				time.sleep(0.1)
+				
 				self.DealOther(self.West,self.Board)
+				time.sleep(0.5)
 				self.updateBoard()
+				self.Westcard[random.randint(0, len(self.Westcard)-1)].destroy()
+				self.master.update()
+				time.sleep(0.5)
+				self.updateBoard()
+				time.sleep(0.1)
+				
 			elif self.max == 3:
 				self.DealFirst(self.West,self.Board)
+				time.sleep(0.5)				
+				self.Westcard[random.randint(0, len(self.Westcard)-1)].destroy()
+				self.master.update()
+				time.sleep(0.5)
 				self.updateBoard()
+				time.sleep(0.1)
 			else:
 				return
 	
@@ -760,27 +699,54 @@ class mainscreen(object):
 	
 	def DealUsermax0(self):
 		self.DealOther(self.East,self.Board)
-		time.sleep(0.1)
+		time.sleep(0.5)
+		self.Eastcard[random.randint(0, len(self.Eastcard)-1)].destroy()
+		self.master.update()
+		time.sleep(0.5)
 		self.updateBoard()
+		time.sleep(0.1)
+		
 		self.DealOther(self.North,self.Board)
-		time.sleep(0.1)
+		time.sleep(0.5)
+		self.Northcard[random.randint(0, len(self.Northcard)-1)].destroy()
+		self.master.update()
+		time.sleep(0.5)
 		self.updateBoard()
+		time.sleep(0.1)
+		
 		self.DealOther(self.West,self.Board)
-		time.sleep(0.1)
+		time.sleep(0.5)
+		self.Westcard[random.randint(0, len(self.Westcard)-1)].destroy()
+		self.master.update()
+		time.sleep(0.5)
 		self.updateBoard()
+		time.sleep(0.1)
 	
 	def DealUsermax2(self):
 		self.DealOther(self.East,self.Board)
-		time.sleep(0.1)
+		time.sleep(0.5)
+		self.Eastcard[random.randint(0, len(self.Eastcard)-1)].destroy()
+		self.master.update()
+		time.sleep(0.5)
 		self.updateBoard()
+		time.sleep(0.1)
 		
 	def DealUsermax3(self):
 		self.DealOther(self.East,self.Board)
-		time.sleep(0.1)
+		time.sleep(0.5)
+		self.Eastcard[random.randint(0, len(self.Eastcard)-1)].destroy()
+		self.master.update()
+		time.sleep(0.5)
 		self.updateBoard()
+		time.sleep(0.1)
+		
 		self.DealOther(self.North,self.Board)
-		time.sleep(0.1)
+		time.sleep(0.5)
+		self.Northcard[random.randint(0, len(self.Northcard)-1)].destroy()
+		self.master.update()
+		time.sleep(0.5)
 		self.updateBoard()
+		time.sleep(0.1)
 	
 	def DealFirst(self,Player,Board):#cpu player dealing first
 		self.favmin=0
@@ -911,7 +877,7 @@ class mainscreen(object):
 
 def main():
     root = Tk()
-    root.geometry("800x600+300+300")
+    root.geometry("800x700+200+100")
     game = mainscreen(root)
     root.protocol('WM_DELETE_WINDOW', root.quit)
     root.mainloop()
