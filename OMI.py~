@@ -1,7 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# -*- coding:sid_ET UTF-8-*- 
-#-*- coding:si_LK UTF-8-*-
-# -*- coding:sk_SK ISO-8859-2 -*-
 """
 #***********************************************************************#
 # Copyright (C) 2014 Prabod Rathnayaka                                  #
@@ -141,12 +139,12 @@ class mainscreen(object):
 		self.master.config( menu = menubar)
 			
 		filemenu = Menu( menubar, tearoff = 0) #File dropdown
-		menubar.add_cascade( label = "ගොනුව", menu = filemenu)
-		filemenu.add_command( label = "ඉවත් වන්න", command = self.master.quit) #child item Quit
+		menubar.add_cascade( label = u"ගොනුව", menu = filemenu)
+		filemenu.add_command( label = u"ඉවත් වන්න", command = self.master.quit) #child item Quit
 			
 		helpmenu = Menu( menubar, tearoff = 0) #Help dropdown
-		menubar.add_cascade( label = "උදව්", menu = helpmenu)
-		helpmenu.add_command( label = "About") #child item About
+		menubar.add_cascade( label = u"උදව්", menu = helpmenu)
+		helpmenu.add_command( label = u"About") #child item About
 		
 		self.userkata=0
 		self.cpukata=0
@@ -170,17 +168,18 @@ class mainscreen(object):
 		self.player2=0
 		self.player3=0
 		self.player4=0
-		
+		self.baldu=False
 		self.ver=150
 		self.hor=260
 		
 		self.prompt=False
 		self.pro=False
 		
-		self.max = 0 #Record the player who played the highest card, South=0 East =1 North =2 West =3
+		
 		self.Fav = 0 #Saves The Favourite suit for the Round
 		self.choosefav = 0 #Record the player who have to choose favourite suit South=0 East =1 North =2 West =3 
 		self.round = 0 #ongoing round
+		self.max = self.round%4 #Record the player who played the highest card, South=0 East =1 North =2 West =3
 		self.user=False
 		
 		self.Eastcard=[]
@@ -190,8 +189,9 @@ class mainscreen(object):
 		self.tempy=[]
 		
 		self.OMI()
-		self.play()
 		self.GUI()
+		self.play()
+		
 		##GUI
 	def GUI(self):
 		self.canvas = Canvas(self.master,
@@ -495,7 +495,15 @@ class mainscreen(object):
 		self.usercard1.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 		
 	def ClickHandler2(self,event):
 		self.Board.append(self.South[1])
@@ -503,7 +511,15 @@ class mainscreen(object):
 		self.usercard2.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 		
 	
 	def ClickHandler3(self,event):
@@ -512,7 +528,15 @@ class mainscreen(object):
 		self.usercard3.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 	
 	def ClickHandler4(self,event):
 		self.Board.append(self.South[3])
@@ -520,7 +544,15 @@ class mainscreen(object):
 		self.usercard4.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 	
 	def ClickHandler5(self,event):
 		self.Board.append(self.South[4])
@@ -528,7 +560,15 @@ class mainscreen(object):
 		self.usercard5.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 	
 	def ClickHandler6(self,event):
 		self.Board.append(self.South[5])
@@ -536,7 +576,15 @@ class mainscreen(object):
 		self.usercard6.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 		
 	def ClickHandler7(self,event):
 		self.Board.append(self.South[6])
@@ -544,7 +592,15 @@ class mainscreen(object):
 		self.usercard7.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 		
 	def ClickHandler8(self,event):
 		self.Board.append(self.South[7])
@@ -552,7 +608,15 @@ class mainscreen(object):
 		self.usercard8.destroy()
 		self.master.update()
 		self.updateBoard()
-		self.DEAL()
+		self.Baldu()
+		if not self.baldu:
+			self.DEAL()
+		else:
+			tkMessageBox.showinfo(" ", u"අත බාල්දුයි!!,කැට 2ක් පරාදයි!!")
+			self.cpukata+=2
+			self.Boardcard=[]
+			self.Board=[]
+			self.Newround()
 	
 	def updateBoard(self):
 		if len(self.Board)>0:
@@ -574,7 +638,6 @@ class mainscreen(object):
 		self.master.update_idletasks()
 	
 	def handwincheck(self):
-		print self.South
 		temp=[]
 		for i in range(0,len(self.Board)):
 			if self.Board[i]//8 == self.Fav:
@@ -583,7 +646,6 @@ class mainscreen(object):
 				temp.append(self.Board[i]%8)
 			else:
 				temp.append(0)
-		print temp
 		self.prevmax=self.max
 		if temp.index(max(temp)) == 0:
 			self.max=self.prevmax
@@ -657,30 +719,33 @@ class mainscreen(object):
 		self.scorehandlose["text"]=str(self.cpuhandwin)
 		self.master.update()
 		self.Board=[]
-		self.roundwincheck()
-		if (self.userhandwin < 4 and self.cpuhandwin < 4) or (self.userhandwin > 4 and self.cpuhandwin ==0) or (self.userhandwin ==0 and self.cpuhandwin >4):
+		
+		if (self.userhandwin <= 4 and self.cpuhandwin <4) or (self.userhandwin > 4 and self.cpuhandwin ==0) or (self.userhandwin ==0 and self.cpuhandwin >4)or (self.userhandwin < 4 and self.cpuhandwin <=4) :
 			self.play()
+		else:
+			self.roundwincheck()
 	
 	def roundwincheck(self):
 		if self.userhandwin == 5 and self.cpuhandwin >0:
+		
 			time.sleep(0.5)
 			time.sleep(0.5)
 			if self.round %4 ==0 or self.round %4 ==2:
 				if self.sepo:
 					self.userkata+=2
 					tkMessageBox.showinfo(" ", u"කලින් අත සෙපෝරුයි!!,\n කැට 2යි")
-					self.sepo=False
 				else:
 					self.userkata+=1
 					tkMessageBox.showinfo(" ", u"තුරුම්පු කියලා දිනුම්!!,\n කැට 1යි")
+				self.sepo=False
 			elif self.round %4 ==1 or self.round %4 ==3:
 				if self.sepo:
-					self.cpukata+=2
-					tkMessageBox.showinfo(" ", u"කලින් අත සෙපෝරුයි!!,\n කැට 2ක් පරාදයි")
-					self.sepo=False
+					self.usrekata+=2
+					tkMessageBox.showinfo(" ", u"කලින් අත සෙපෝරුයි!!,\n කැට 2යි")
 				else:
-					self.cpukata+=2
-					tkMessageBox.showinfo(" ", u"තුරුම්පු කියලා පරාදයි!!,\n කැට 2ක් පරාදයි")
+					self.userkata+=2
+					tkMessageBox.showinfo(" ", u"තුරුම්පු කියලා පරාදයි!!,\n කැට 2යි")
+				self.sepo=False
 			self.Newround()
 			
 		elif self.userhandwin > 0 and self.cpuhandwin ==5:
@@ -696,12 +761,12 @@ class mainscreen(object):
 					tkMessageBox.showinfo(" ", u"පරාදයි!!,\n කැටයක් පරාදයි")
 			elif self.round %4 ==0 or self.round %4 ==2:
 				if self.sepo:
-					self.userkata+=2
-					tkMessageBox.showinfo(" ", u"කලින් අත සෙපෝරුයි!!,\n කැට 2යි")
+					self.cpukata+=2
+					tkMessageBox.showinfo(" ", u"කලින් අත සෙපෝරුයි!!,\n කැට 2ක් පරාදයි")
 					self.sepo=False
 				else:
-					self.userkata+=2
-					tkMessageBox.showinfo(" ", u"දිනුම්!!,\n කැට 2යි")
+					self.cpukata+=2
+					tkMessageBox.showinfo(" ", u"පරාදයි!!,\n කැට 2ක් පරාදයි")
 			self.Newround()
 			
 		elif self.userhandwin == 8:
@@ -731,14 +796,29 @@ class mainscreen(object):
 			time.sleep(0.5)
 			self.sepo=True
 			tkMessageBox.showinfo(" ", u"අත සෙපෝරුයි!!")
-			
+			self.Newround()
+	def Baldu(self):
+		soc=self.Board[0]//8
+		pcs=self.Board[len(self.Board)-1]//8
+		if soc != pcs:
+			for i in range(len(self.tempy)):
+				if self.tempy[i]//64 == soc:
+					self.baldu=True
+					return
+					
 	def Newround(self):
 		if self.userkata >=10:
 			tkMessageBox.showinfo(" ", u"සුභ පැතුම්!!\n ඔබ තරගය ජය ගත්තා!!!")
+			self.userkata=0
+			self.cpukata=0
 		elif self.cpukata >=10:
-			tkMessageBox.showinfo(" ", u"ඔබ තරගය පරාජය වුනා!!") 
+			tkMessageBox.showinfo(" ", u"ඔබ තරගය පරාජය වුනා!!")
+			self.userkata=0
+			self.cpukata=0
+			 
+		self.round+=1
+		self.max=self.round % 4
 		self.canvas.destroy()
-		self.max=self.round%4
 		self.Board = []
 		self.South = [] #User
 		self.East = [] #Cpu player1
@@ -751,6 +831,8 @@ class mainscreen(object):
 		self.Player2 = [] 
 		self.Player3 = [] 
 		self.Player4 = [] 
+		self.baldu=False
+		
 		self.prompt=False
 		self.pro=False
 		self.user=False
@@ -772,32 +854,22 @@ class mainscreen(object):
 		if self.round % 4 == 0:
 			
 			self.DivideCards(self.South,self.East,self.North,self.West)
-			self.round += 1
-			self.choosefav += 1
+			
 		elif self.round % 4 == 1:
 			
 			self.DivideCards(self.East,self.North,self.West,self.South)
-			self.round += 1
-			self.choosefav += 1
 			
 		elif self.round % 4 == 2:
 			
 			self.DivideCards(self.North,self.West,self.South,self.East)
-			self.round += 1
-			self.choosefav += 1
 			
 		elif self.round % 4 == 3:
 			
 			self.DivideCards(self.West,self.South,self.East,self.North)
-			self.round += 1
-			self.choosefav += 1
-			
-		print self.South,self.East,self.North,self.West
-		print self.Board
 		
 	def play(self):
 		if(not self.win):
-			if self.max == 1:
+			if self.max == 1 :
 				self.DealFirst(self.East,self.Board)
 				time.sleep(0.5)
 				lst=random.randint(0, len(self.Eastcard)-1)
@@ -827,7 +899,7 @@ class mainscreen(object):
 				time.sleep(0.5)
 				self.updateBoard()
 				time.sleep(0.1)
-				
+				return
 				
 			elif self.max == 2:
 				self.DealFirst(self.North,self.Board)
@@ -849,7 +921,7 @@ class mainscreen(object):
 				time.sleep(0.5)
 				self.updateBoard()
 				time.sleep(0.1)
-				
+				return
 			elif self.max == 3:
 				self.DealFirst(self.West,self.Board)
 				time.sleep(0.5)				
@@ -860,6 +932,7 @@ class mainscreen(object):
 				time.sleep(0.5)
 				self.updateBoard()
 				time.sleep(0.1)
+				return
 			else:
 				return
 	
@@ -895,7 +968,8 @@ class mainscreen(object):
 		time.sleep(0.5)
 		self.updateBoard()
 		time.sleep(0.1)
-	
+		return
+		
 	def DealUsermax2(self):
 		self.DealOther(self.East,self.Board)
 		time.sleep(0.5)
@@ -906,6 +980,7 @@ class mainscreen(object):
 		time.sleep(0.5)
 		self.updateBoard()
 		time.sleep(0.1)
+		return
 		
 	def DealUsermax3(self):
 		self.DealOther(self.East,self.Board)
@@ -927,7 +1002,8 @@ class mainscreen(object):
 		time.sleep(0.5)
 		self.updateBoard()
 		time.sleep(0.1)
-	
+		return
+		
 	def DealFirst(self,Player,Board):#cpu player dealing first
 		favmin=55
 		mini=55
@@ -1092,5 +1168,5 @@ def main():
     game = mainscreen(root)
     root.protocol('WM_DELETE_WINDOW', root.quit)
     root.mainloop()
-if __name__ == '__main__':
+
     main()
